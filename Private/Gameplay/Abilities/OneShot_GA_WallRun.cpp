@@ -3,13 +3,8 @@
 
 #include "Gameplay/Abilities/OneShot_GA_WallRun.h"
 
-#include "ToolBuilderUtil.h"
-#include "camera/CameraComponent.h"
 #include "Character/OneShotPlayerCharacter.h"
-#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "GameFramework/PawnMovementComponent.h"
 #include "Gameplay/OneShotBaseASC.h"
 #include "Gameplay/OneShotBaseAttributeSet.h"
 #include "Gameplay/Abilities/OneShot_GT_WallRun.h"
@@ -41,10 +36,11 @@ void UOneShot_GA_WallRun::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 
 			FVector NearestWallRotation = NearestWall->GetActorRotation().Vector();
 
-			PlayerCharacter->GetCharacterMovement()->GravityScale = 0.2f;
+			PlayerCharacter->GetCharacterMovement()->GravityScale = WallRunGravityScale;
 			UOneShotBaseASC* AbilitySystemComponent = PlayerCharacter->GetAbilitySystemComponent();
-			FGameplayTag WallRunningTag = FGameplayTag::RequestGameplayTag(FName("OneShot.Abilities.WallRunning"));
-			UOneShot_GT_WallRun* WallRunTask = UOneShot_GT_WallRun::WallRun(this, 0.05f, NearestWallRotation, MaxRunningSpeed);
+			FGameplayTagContainer WallRunningTag = AbilityTags;
+			// Interval can be adjusted for optimization
+			UOneShot_GT_WallRun* WallRunTask = UOneShot_GT_WallRun::WallRun(this, 0.05f, NearestWallRotation, MaxRunningSpeed, WallRunningTag);
 			WallRunTask->OnFinished.AddDynamic(this, &UOneShot_GA_WallRun::OnAbilityFinished);
 			WallRunTask->ReadyForActivation();
 		}

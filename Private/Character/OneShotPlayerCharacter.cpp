@@ -58,11 +58,11 @@ void AOneShotPlayerCharacter::Look(const FInputActionValue& Value)
 }
 
 
-bool AOneShotPlayerCharacter::EndAbilityWithTag(FName AbilityTag)
+bool AOneShotPlayerCharacter::EndAbilityWithTag(FGameplayTag AbilityTag)
 {
-	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(AbilityTag)))
+	if (GetAbilitySystemComponent()->HasMatchingGameplayTag(AbilityTag))
 	{
-		FGameplayTagContainer TagToCancelAbilities = FGameplayTagContainer(FGameplayTag::RequestGameplayTag(AbilityTag));
+		FGameplayTagContainer TagToCancelAbilities = FGameplayTagContainer(AbilityTag);
 		GetAbilitySystemComponent()->CancelAbilities(&TagToCancelAbilities);
 		return true;
 	}
@@ -71,21 +71,14 @@ bool AOneShotPlayerCharacter::EndAbilityWithTag(FName AbilityTag)
 
 void AOneShotPlayerCharacter::Fire()
 {
+	// TODO: Implement custom firing logic
 	UE_LOG(LogTemp, Warning, TEXT("Fire ability triggered"))
-}
-
-void AOneShotPlayerCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
-{
-	if (PrevMovementMode == MOVE_Falling)
-	{
-		GetCharacterMovement()->GravityScale = 1.f;
-	}
-	Super::OnMovementModeChanged(PrevMovementMode, PreviousCustomMode);
 }
 
 void AOneShotPlayerCharacter::Jump()
 {
-	if (EndAbilityWithTag(TEXT("OneShot.Abilities.WallRunning")))
+	// TODO: Move jump as its own gameplay ability, this will allow us to adjust launch angle + launch distance outside the character class
+	if (EndAbilityWithTag(FGameplayTag::RequestGameplayTag(TEXT("OneShot.Abilities.WallRunning"))))
 	{
 		TArray<AActor*> FoundActors;
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARunnableWall::StaticClass(), FoundActors);

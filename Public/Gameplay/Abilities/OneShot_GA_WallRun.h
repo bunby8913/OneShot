@@ -35,5 +35,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float MaxRunningSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float WallRunGravityScale = 0.2f;
 	
 };

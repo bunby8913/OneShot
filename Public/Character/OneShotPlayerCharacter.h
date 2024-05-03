@@ -35,12 +35,11 @@ public:
 	USkeletalMeshComponent* GetPlayerMesh() const {return ArmMesh;};
 	UCameraComponent* GetPlayerCameraComponent() const {return PlayerCameraComponent;};
 
+	/* If there is a gameplay ability has the abilityTag, cancel the ability and return true, if the ability not found, return false*/
 	UFUNCTION(BlueprintCallable)
-	bool EndAbilityWithTag(FName AbilityTag);
+	bool EndAbilityWithTag(FGameplayTag AbilityTag);
 
 	void Fire();
-
-	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
 	
 	virtual void Jump() override;
 	

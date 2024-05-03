@@ -4,43 +4,43 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/Tasks/AbilityTask.h"
-#include "OneShot/Public/Character/OneShotPlayerCharacter.h"
 #include "OneShot_GT_WallRun.generated.h"
+
+class AOneShotPlayerCharacter;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FWallRunActionDelegate);
 
 /**
- * Repeatedly check character's stamina and perform the wall run action
+ * Repeatedly check character's stamina and perform and update player velocity
  */
 UCLASS()
 class ONESHOT_API UOneShot_GT_WallRun : public UAbilityTask
 {
 	GENERATED_BODY()
 
-
 public:
-	
 	UPROPERTY(BlueprintAssignable)
 	FWallRunActionDelegate OnFinished;
 	
 	UFUNCTION(BlueprintCallable, Category= "Ability|Tasks", meta=(HidePin = "OwningAbility", DefaultToSelf = "OwningAbility", BlueprintInternalUseOnly = "TRUE"))
-	static UOneShot_GT_WallRun* WallRun(UGameplayAbility* OwningAbility, float Interval, FVector Rotation, float Speed);
+	static UOneShot_GT_WallRun* WallRun(UGameplayAbility* OwningAbility, float Interval, FVector Rotation, float Speed, FGameplayTagContainer TagContainer);
+	
 	virtual void Activate() override;
 
 protected:
+	void PerformWallRun();
+	
+	virtual void OnDestroy(bool bInOwnerFinished) override;
 	
 	FTimerHandle TimerHandle;
 	
 	float checkInterval;
 	
+	float MaxRunningSpeed;
+	
 	FVector WallRotation;
 
-	float MaxRunningSpeed;
+	FGameplayTagContainer AbilityTagContainer;
 
-	AOneShotPlayerCharacter* PlayerCharacter;
-
-	void PerformWallRun();
-	
-	virtual void OnDestroy(bool bInOwnerFinished) override;
-	
+	AOneShotPlayerCharacter* PlayerCharacter;	
 };
