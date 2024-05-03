@@ -42,5 +42,10 @@ protected:
 
 	FGameplayTagContainer AbilityTagContainer;
 
-	AOneShotPlayerCharacter* PlayerCharacter;	
+	AOneShotPlayerCharacter* PlayerCharacter;
+
+	// Used to determine which direction is the player approaching the wall, adjust velocity accordingly
+	int32 DirectionFactor = 1;
+	
+	
 };
