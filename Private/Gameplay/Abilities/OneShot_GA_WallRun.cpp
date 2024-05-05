@@ -26,7 +26,6 @@ void UOneShot_GA_WallRun::ActivateAbility(const FGameplayAbilitySpecHandle Handl
 	if (HasAuthorityOrPredictionKey(ActorInfo, &ActivationInfo))
 	{
 		PlayerCharacter = CastChecked<AOneShotPlayerCharacter>(ActorInfo->AvatarActor.Get());
-		PlayerCharacter->AddGameplayTag(FGameplayTag::RequestGameplayTag(TEXT("OneShot.Abilities.Cost.WallRun")));
 		if(CommitAbility(Handle, ActorInfo, ActivationInfo))
 		{
 			TArray<AActor*> FoundActors;
