@@ -10,6 +10,7 @@
 #include "OneShot/Public/Gameplay/Abilities/OneShot_GA_WallRun.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Blueprint/UserWidget.h"
 #include "InputActionValue.h"
 #include "Engine/LocalPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -34,7 +35,6 @@ AOneShotPlayerCharacter::AOneShotPlayerCharacter()
 	ArmMesh->bCastDynamicShadow = false;
 	ArmMesh->CastShadow = false;
 	ArmMesh->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
 }
 
 void AOneShotPlayerCharacter::Move(const FInputActionValue& Value)
@@ -101,6 +101,16 @@ void AOneShotPlayerCharacter::Jump()
 void AOneShotPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	// Setup and add the main UI to viewport
+	if (PlayerMainWidgetClass)
+	{
+		PlayerMainWidget = CreateWidget<UUserWidget>(GetWorld(), PlayerMainWidgetClass);
+		if (PlayerMainWidget)
+		{
+			PlayerMainWidget->AddToViewport();
+		}
+	}
+	
 }
 
 void AOneShotPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

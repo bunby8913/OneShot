@@ -7,6 +7,7 @@
 #include "TP_WeaponComponent.generated.h"
 
 class AOneShotPlayerCharacter;
+class AOneShotBaseProjectile;
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ONESHOT_API UTP_WeaponComponent : public USkeletalMeshComponent
@@ -16,7 +17,7 @@ class ONESHOT_API UTP_WeaponComponent : public USkeletalMeshComponent
 public:
 	/** Projectile class to spawn */
 	UPROPERTY(EditDefaultsOnly, Category=Projectile)
-	TSubclassOf<class AOneShotProjectile> ProjectileClass;
+	TSubclassOf<AOneShotBaseProjectile> ProjectileClass;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category=Gameplay)
@@ -38,6 +39,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* FireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=TexCreate_InputAttachmentRead, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* AimAction;
+
 	/** Sets default values for this component's properties */
 	UTP_WeaponComponent();
 
@@ -48,6 +52,12 @@ public:
 	/** Make the weapon Fire a Projectile */
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
+
+	UFUNCTION(Blueprintable, Category="Weapon")
+	void AimDownSight();
+
+	UFUNCTION(Blueprintable, Category="Weapon")
+	void ReleaseAimDownSight();
 
 protected:
 	/** Ends gameplay for this component. */

@@ -14,6 +14,7 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 struct FInputActionValue;
+class UUserWidget;
 
 
 DECLARE_LOG_CATEGORY_EXTERN(LogOneShotPlayerCharacter, Log, All);
@@ -71,4 +72,11 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float LaunchAngle = 1.f;
+
+	UPROPERTY( EditAnywhere, Category= "UI")
+	TSubclassOf<UUserWidget> PlayerMainWidgetClass;
+
+	UPROPERTY()
+	UUserWidget* PlayerMainWidget;
+
 };

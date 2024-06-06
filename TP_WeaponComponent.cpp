@@ -3,7 +3,6 @@
 
 #include "TP_WeaponComponent.h"
 #include "OneShotCharacter.h"
-#include "OneShotProjectile.h"
 #include "GameFramework/PlayerController.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -13,6 +12,7 @@
 #include "Character/OneShotPlayerCharacter.h"
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
+#include "Projectile/OneShotRegularProjectile.h"
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()
@@ -45,7 +45,7 @@ void UTP_WeaponComponent::Fire()
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	
 			// Spawn the projectile at the muzzle
-			World->SpawnActor<AOneShotProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			World->SpawnActor<AOneShotRegularProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}
 	}
 	
@@ -65,6 +65,16 @@ void UTP_WeaponComponent::Fire()
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
 		}
 	}
+}
+
+void UTP_WeaponComponent::AimDownSight()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Aim down sight activae"));
+}
+
+void UTP_WeaponComponent::ReleaseAimDownSight()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Released"));
 }
 
 bool UTP_WeaponComponent::AttachWeapon(AOneShotPlayerCharacter* TargetCharacter)
@@ -97,6 +107,10 @@ bool UTP_WeaponComponent::AttachWeapon(AOneShotPlayerCharacter* TargetCharacter)
 		{
 			// Fire
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire);
+			// Aim down sight + release
+			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::AimDownSight);
+
+			EnhancedInputComponent->BindAction(AimAction, ETriggerEvent::Completed, this, &UTP_WeaponComponent::ReleaseAimDownSight);
 		}
 	}
 
